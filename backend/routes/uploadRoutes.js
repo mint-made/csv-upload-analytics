@@ -3,7 +3,7 @@ import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
 import csv from 'csv-parser';
-import { genStatisticStatement } from '../utils/analytics.js';
+import { genStatisticString } from '../utils/analytics.js';
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -47,9 +47,8 @@ router.post('/', upload.single('csvFile'), (req, res) => {
       numbersArr.push(Number(row.number));
     })
     .on('end', () => {
-      console.log(numbersArr);
+      res.send(genStatisticString(numbersArr));
     });
-  res.send(`/${req.file.path}`);
 });
 
 export default router;
