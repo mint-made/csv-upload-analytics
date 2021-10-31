@@ -1,42 +1,40 @@
 import React, { useState } from 'react';
-import { Form, Card } from 'react-bootstrap';
+import { Form, Card, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 const UploadScreen = () => {
   const [file, setFile] = useState('');
   const [uploading, setUploading] = useState(false);
 
-  const uploadFileHandler = () => {
-    console.log(file);
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('csvFile', file);
+    setUploading(true);
+    console.log(e.target.files[0]);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      const { data } = await axios.post('/api/upload', formData, config);
+
+      //setFile(data.imagePath);
+      console.log(data);
+      setUploading(false);
+    } catch (e) {
+      console.error(e);
+      setUploading(false);
+    }
   };
-
-  // const uploadFileHandler = async (e) => {
-  //   const file = e.target.files[0];
-  //   const formData = new FormData();
-  //   formData.append('image', file);
-  //   setUploading(true);
-
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //         Authorization: `Bearer ${userInfo.token}`,
-  //       },
-  //     };
-  //     const { data } = await axios.post('/api/upload', formData, config);
-
-  //     setFile(data.imagePath);
-  //     setUploading(false);
-  //   } catch (e) {
-  //     console.error(e);
-  //     setUploading(false);
-  //   }
-  // };
   return (
     <div>
       <Form onSubmit={(e) => console.log(e)}>
+        <p>{file}</p>
         <Card>
-          <Form.Group controlId='image'>
+          <Form.Group controlId='csv-file'>
             <Form.Label>CSV File</Form.Label>
             <Form.Control
               type='text'
@@ -51,6 +49,13 @@ const UploadScreen = () => {
               onChange={uploadFileHandler}
             ></Form.File>
           </Form.Group>
+          {uploading ? (
+            <Spinner animation='border' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </Spinner>
+          ) : (
+            <></>
+          )}
         </Card>
       </Form>
     </div>
