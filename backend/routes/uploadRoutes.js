@@ -37,7 +37,7 @@ const upload = multer({
 
 router.post('/', upload.single('csvFile'), (req, res) => {
   const numbersArr = [];
-
+  console.log(req);
   /**Creates a readstream, so the data can be read and piped to
    *  the csv function (csv-parser package), from which we can write
    * the data to the numberArr variable */
