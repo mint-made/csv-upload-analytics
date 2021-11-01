@@ -34,10 +34,9 @@ const UploadScreen = () => {
   };
   return (
     <div>
-      <Form onSubmit={(e) => console.log(e)}>
-        <p>{file}</p>
+      <Form>
         <Card>
-          <Form.Group controlId='csv-file'>
+          <Form.Group controlId='csv-file' className='mb-5 mx-auto'>
             <Form.Label>CSV File</Form.Label>
             <Form.Control
               type='text'
@@ -52,34 +51,34 @@ const UploadScreen = () => {
               onChange={uploadFileHandler}
             ></Form.File>
           </Form.Group>
-          {uploading ? (
-            <Spinner animation='border' role='status'>
-              <span className='visually-hidden'>Loading...</span>
-            </Spinner>
-          ) : statisticHeaders.length > 0 && statisticValues.length > 0 ? (
-            <div className='d-flex justify-content-center'>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    {statisticHeaders.map((header, index) => (
-                      <th key={index}>{header}</th>
-                    ))}
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    {statisticValues.map((value, index) => (
-                      <td key={index}>{value}</td>
-                    ))}
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          ) : (
-            <></>
-          )}
         </Card>
+        {uploading ? (
+          <Spinner animation='border' role='status'>
+            <span className='visually-hidden'>Loading...</span>
+          </Spinner>
+        ) : statisticHeaders.length > 0 && statisticValues.length > 0 ? (
+          <div className='d-flex justify-content-center'>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  {statisticHeaders.map((header, index) => (
+                    <th key={index}>{header}</th>
+                  ))}
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {statisticValues.map((value, index) => (
+                    <td key={index}>{value}</td>
+                  ))}
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+        ) : (
+          <></>
+        )}
       </Form>
     </div>
   );

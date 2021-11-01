@@ -1,9 +1,8 @@
-import './App.css';
 import UploadScreen from './screens/UploadScreen';
 
 function App() {
   return (
-    <div className='App'>
+    <div className='App p-4'>
       <UploadScreen />
     </div>
   );
