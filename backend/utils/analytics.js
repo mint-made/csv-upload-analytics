@@ -39,7 +39,7 @@ const generateStatisticHeaders = () => {
 
 const genStatisticString = (numbersArr) => {
   const statisticString = generateStatisticArr(numbersArr).join(',');
-  return 'Total Integers, Mean, Highest Occurrences, Most Common, Highest, Lowest-'.concat(
+  return 'Total Integers, Mean, Highest Occurrences, Most Common, Highest, Lowest#'.concat(
     statisticString
   );
 };

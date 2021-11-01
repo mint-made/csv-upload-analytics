@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Form, Card, Spinner } from 'react-bootstrap';
+import { Form, Card, Spinner, Table } from 'react-bootstrap';
 import axios from 'axios';
 
 const UploadScreen = () => {
   const [file, setFile] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [statisticHeaders, setStatisticHeaders] = useState([]);
+  const [statisticValues, setStatisticValues] = useState([]);
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
@@ -21,8 +23,9 @@ const UploadScreen = () => {
       };
       const { data } = await axios.post('/api/upload', formData, config);
 
-      //setFile(data.imagePath);
-      console.log(data);
+      const statisticArr = data.split('#');
+      setStatisticHeaders(statisticArr[0].split(', '));
+      setStatisticValues(statisticArr[1].split(','));
       setUploading(false);
     } catch (e) {
       console.error(e);
@@ -53,6 +56,26 @@ const UploadScreen = () => {
             <Spinner animation='border' role='status'>
               <span className='visually-hidden'>Loading...</span>
             </Spinner>
+          ) : statisticHeaders.length > 0 && statisticValues.length > 0 ? (
+            <div className='d-flex justify-content-center'>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    {statisticHeaders.map((header, index) => (
+                      <th key={index}>{header}</th>
+                    ))}
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    {statisticValues.map((value, index) => (
+                      <td key={index}>{value}</td>
+                    ))}
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
           ) : (
             <></>
           )}
